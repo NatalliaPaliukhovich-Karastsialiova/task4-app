@@ -1,0 +1,10 @@
+.login-right-bg {
+  background-image: url('../assets/login-bg.jpg');
+  background-size: cover;
+  background-position: center;
+}
+
+.w-10 { width: 10% !important; }
+.w-30 { width: 30% !important; }
+.w-60 { width: 60% !important; }
+.w-5 { width: 5% !important; }
