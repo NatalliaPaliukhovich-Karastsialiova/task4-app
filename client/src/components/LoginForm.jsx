@@ -1,17 +1,29 @@
-import { useState } from 'react';
+import FloatingInput from './FloatingInput';
 
-export default function LoginForm({ onSubmit, email, setEmail, password, setPassword, error, setError }) {
+export default function LoginForm({
+  onSubmit,
+  email,
+  setEmail,
+  password,
+  setPassword,
+  error,
+  setError,
+  showPassword,
+  setShowPassword,
+  remember,
+  setRemember,
+}) {
   return (
     <form onSubmit={onSubmit}>
       <div className="mb-4">
-        <label htmlFor="email" className="form-label">E-mail</label>
-        <input
-          type="email"
-          className="form-control form-control-lg"
+        <FloatingInput
           id="email"
-          placeholder="test@example.com"
+          label="E-mail"
+          type="email"
+          icon="bi-envelope-fill"
           value={email}
-          onChange={(e) => {
+          required={true}
+          onChange={e => {
             setEmail(e.target.value);
             setError('');
           }}
@@ -19,23 +31,32 @@ export default function LoginForm({ onSubmit, email, setEmail, password, setPass
       </div>
 
       <div className="mb-4">
-        <label htmlFor="password" className="form-label">Password</label>
-        <input
-          type="password"
-          className="form-control form-control-lg"
+        <FloatingInput
           id="password"
-          placeholder="••••••••"
+          label="Password"
+          required={true}
+          type={showPassword ? 'text' : 'password'}
+          icon={showPassword ? 'bi-eye-slash-fill' : 'bi-eye-fill'}
           value={password}
-          onChange={(e) => {
+          onChange={e => {
             setPassword(e.target.value);
             setError('');
           }}
+          onIconClick={() => setShowPassword(prev => !prev)}
         />
       </div>
 
       <div className="form-check mb-4">
-        <input className="form-check-input" type="checkbox" id="remember" />
-        <label className="form-check-label" htmlFor="remember">Remember me</label>
+        <input
+          className="form-check-input"
+          type="checkbox"
+          id="remember"
+          checked={remember}
+          onChange={e => setRemember(e.target.checked)}
+        />
+        <label className="form-check-label" htmlFor="remember">
+          Remember me
+        </label>
       </div>
 
       <button type="submit" className="btn btn-primary btn-lg w-100">

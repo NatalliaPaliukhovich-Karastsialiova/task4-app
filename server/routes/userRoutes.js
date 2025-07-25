@@ -1,10 +1,10 @@
 const express = require('express');
-const userController = require('../controllers/userController');
-const verifyToken = require('../middleware/authMiddleware');
+const {checkUserStatus, getUsers, handleBatchAction} = require('../controllers/userController');
+const {verifyToken} = require('../middleware/authMiddleware');
 
 const router = express.Router();
 
-router.get('/', verifyToken, userController.checkUserStatus, userController.getUsers);
-router.post('/batch', verifyToken, userController.checkUserStatus, userController.handleBatchAction);
+router.get('/', verifyToken, checkUserStatus, getUsers);
+router.post('/batch', verifyToken, checkUserStatus, handleBatchAction);
 
 module.exports = router;

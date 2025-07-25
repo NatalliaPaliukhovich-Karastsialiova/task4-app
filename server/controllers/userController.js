@@ -1,8 +1,4 @@
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
 const userModel = require('../models/userModel');
-
-const JWT_SECRET = process.env.JWT_SECRET;
 
 exports.checkUserStatus =  async (req, res, next) => {
   try {

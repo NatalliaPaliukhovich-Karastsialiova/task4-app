@@ -8,7 +8,6 @@ import Register from './pages/Register';
 import { useState, useEffect } from 'react';
 
 export default function App() {
-
   const [token, setToken] = useState(localStorage.getItem('token'));
   const location = useLocation();
 
@@ -19,6 +18,7 @@ export default function App() {
   return (
     <div>
       <Routes>
+        <Route path="/" element={token ? <Navigate to="/home" /> : <Login />} />
         <Route
           path="/login"
           element={token ? <Navigate to="/home" /> : <Login />}

@@ -4,7 +4,7 @@ import { FaLock, FaLockOpen, FaTrash } from 'react-icons/fa';
 const TableToolbar = ({ selectedCount, onAction, onFilterChange }) => {
   const [filter, setFilter] = useState('');
 
-  const handleFilterChange = (e) => {
+  const handleFilterChange = e => {
     const value = e.target.value;
     setFilter(value);
     onFilterChange(value);
@@ -15,21 +15,21 @@ const TableToolbar = ({ selectedCount, onAction, onFilterChange }) => {
       <div className="d-flex flex-wrap gap-2">
         <button
           className="btn btn-outline-primary d-flex align-items-center gap-1"
-          onClick={()=> onAction('block')}
+          onClick={() => onAction('block')}
           disabled={selectedCount === 0}
         >
           <FaLock /> Block
         </button>
         <button
           className="btn btn-outline-primary d-flex align-items-center"
-          onClick={()=> onAction('unblock')}
+          onClick={() => onAction('unblock')}
           disabled={selectedCount === 0}
         >
           <FaLockOpen />
         </button>
         <button
           className="btn btn-outline-danger d-flex align-items-center"
-          onClick={()=> onAction('delete')}
+          onClick={() => onAction('delete')}
           disabled={selectedCount === 0}
         >
           <FaTrash />

@@ -1,106 +1,117 @@
-export default function RegisterForm({ formData, handleChange, handleSubmit, error, setError }) {
+import FloatingInput from './FloatingInput';
+
+export default function RegisterForm({
+  formData,
+  handleChange,
+  handleSubmit,
+  error,
+  setError,
+  showPassword,
+  setShowPassword,
+}) {
   return (
     <form onSubmit={handleSubmit}>
       <div className="mb-4">
-        <input
-          type="email"
-          className="form-control form-control-lg"
+        <FloatingInput
           id="email"
-          name="email"
-          placeholder="test@example.com"
+          label="E-mail"
+          type="email"
+          icon="bi-envelope-fill"
           value={formData.email}
-          onChange={(e) => {
+          required={true}
+          onChange={e => {
             handleChange(e);
             setError('');
           }}
-          required
         />
       </div>
 
-      <div className="mb-4 d-flex gap-2">
-        <input
+      <div className="mb-4"></div>
+
+      <div className="mb-4 d-flex gap-2 w-100">
+        <FloatingInput
+          id="firstName"
+          label="First Name"
           type="text"
-          className="form-control form-control-lg"
-          name="firstName"
-          placeholder="First Name"
+          icon="bi-person-circle"
           value={formData.firstName}
-          onChange={(e) => {
+          required={true}
+          onChange={e => {
             handleChange(e);
             setError('');
           }}
-          required
         />
-        <input
+        <FloatingInput
+          id="lastName"
+          label="Last Name"
           type="text"
-          className="form-control form-control-lg"
-          name="lastName"
-          placeholder="Last Name"
+          icon="bi-person-circle"
           value={formData.lastName}
-          onChange={(e) => {
+          required={true}
+          onChange={e => {
             handleChange(e);
             setError('');
           }}
-          required
         />
       </div>
 
       <div className="mb-4">
-        <input
+        <FloatingInput
+          id="companyName"
+          label="Company Name"
           type="text"
-          className="form-control form-control-lg"
-          name="companyName"
-          placeholder="Test company"
+          icon="bi-building-fill"
           value={formData.companyName}
-          onChange={(e) => {
+          onChange={e => {
             handleChange(e);
             setError('');
           }}
-          required
         />
       </div>
 
       <div className="mb-4">
-        <input
+        <FloatingInput
+          id="jobTitle"
+          label="Job Title"
           type="text"
-          className="form-control form-control-lg"
-          name="jobTitle"
-          placeholder="Project Manager"
+          icon="bi-person-workspace"
           value={formData.jobTitle}
-          onChange={(e) => {
+          onChange={e => {
             handleChange(e);
             setError('');
           }}
-          required
         />
       </div>
 
       <div className="mb-4">
-        <input
-          type="password"
-          className="form-control form-control-lg"
-          name="password"
-          placeholder="Password"
+        <FloatingInput
+          id="password"
+          label="Password"
           value={formData.password}
-          onChange={(e) => {
+          required={true}
+          type={showPassword ? 'text' : 'password'}
+          icon={showPassword ? 'bi-eye-slash-fill' : 'bi-eye-fill'}
+          onIconClick={() => setShowPassword(prev => !prev)}
+          onChange={e => {
             handleChange(e);
             setError('');
           }}
-          required
         />
       </div>
 
       <div className="mb-4">
-        <input
-          type="password"
-          className="form-control form-control-lg"
-          name="confirmPassword"
-          placeholder="Confirm Password"
+        <FloatingInput
+          id="confirmPassword"
+          label="Confirm Password"
           value={formData.confirmPassword}
-          onChange={(e) => {
+          required={true}
+          type={showPassword ? 'text' : 'password'}
+          icon={showPassword ? 'bi-eye-slash-fill' : 'bi-eye-fill'}
+          onIconClick={() => setShowPassword(prev => !prev)}
+          onChange={e => {
             handleChange(e);
             setError('');
           }}
-          required
         />
       </div>
 

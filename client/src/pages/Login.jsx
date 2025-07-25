@@ -1,49 +1,57 @@
 import './style.css';
 import { useNavigate, Link, Navigate } from 'react-router-dom';
 import { useState } from 'react';
+import { toast } from 'react-toastify';
 import AuthLayout from '../components/AuthLayout';
 import AuthHeader from '../components/AuthHeader';
 import LoginForm from '../components/LoginForm';
 import AuthAlert from '../components/AuthAlert';
 import { useLoader } from '../context/LoaderContext';
+import { loginUser } from '../services/api';
+import {
+  saveRememberedCredentials,
+  clearRememberedCredentials,
+  getRememberedCredentials,
+} from '../utils/authStorage';
 
 export default function Login() {
-
   const API_URL = import.meta.env.VITE_API_URL;
 
   const navigate = useNavigate();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const remembered = getRememberedCredentials();
+  const [email, setEmail] = useState(remembered.email);
+  const [password, setPassword] = useState(remembered.password);
   const [error, setError] = useState('');
+  const [remember, setRemember] = useState(!!remembered.email);
   const { setLoading } = useLoader();
+  const [showPassword, setShowPassword] = useState(false);
 
-  const handleLogin = async (e) => {
+  const handleLogin = async e => {
     e.preventDefault();
+
+    remember
+      ? saveRememberedCredentials(email, password)
+      : clearRememberedCredentials();
 
     try {
       setLoading(true);
-      const res = await fetch(`${API_URL}/api/v1/auth/web/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: email, password }),
-      });
 
-      const data = await res.json();
+      const res = await loginUser({ email: email, password });
 
       setLoading(false);
 
       if (!res.ok) {
-        setError(data.error || 'Login failed');
+        setError(res.data.error || 'Login failed');
         return;
       }
 
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('email', data.user.email);
+      localStorage.setItem('token', res.data.token);
+      localStorage.setItem('email', res.data.user.email);
       navigate('/home');
-
     } catch (err) {
       console.error(err);
-      alert('Server error');
+      setLoading(false);
+      toast.error('Server error');
     }
   };
 
@@ -51,20 +59,21 @@ export default function Login() {
     <AuthLayout>
       <h1 className="text-primary fw-bold mb-4">THE APP</h1>
       <div className="col-12 col-xl-9 align-self-center">
-      <AuthHeader
-        title="Sign In to The App"
-        subtitle="Start your journey"
-      />
-      <AuthAlert message={error} />
-      <LoginForm
-        onSubmit={handleLogin}
-        email={email}
-        setEmail={setEmail}
-        password={password}
-        setPassword={setPassword}
-        error={error}
-        setError={setError}
-      />
+        <AuthHeader title="Sign In to The App" subtitle="Start your journey" />
+        <AuthAlert message={error} />
+        <LoginForm
+          onSubmit={handleLogin}
+          email={email}
+          setEmail={setEmail}
+          password={password}
+          setPassword={setPassword}
+          error={error}
+          setError={setError}
+          showPassword={showPassword}
+          setShowPassword={setShowPassword}
+          remember={remember}
+          setRemember={setRemember}
+        />
       </div>
       <p className="mt-4 text-muted">
         Don't have an account? <Link to="/register">Sign up</Link>

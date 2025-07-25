@@ -9,11 +9,11 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <BrowserRouter>
-      <LoaderProvider>
-        <App />
-      </LoaderProvider>
-    </BrowserRouter>
-  </StrictMode>,
-)
+  // <StrictMode>
+  <BrowserRouter>
+    <LoaderProvider>
+      <App />
+    </LoaderProvider>
+  </BrowserRouter>
+  // </StrictMode>,
+);

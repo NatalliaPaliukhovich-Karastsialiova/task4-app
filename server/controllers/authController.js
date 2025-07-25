@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const userModel = require('../models/userModel');
 
 const JWT_SECRET = process.env.JWT_SECRET;
+const UNIQUE_VIOLATION = '23505';
 
 exports.register =  async (req, res) => {
   const { email, password, first_name, last_name, company_name, job_title } = req.body;
@@ -11,7 +12,7 @@ exports.register =  async (req, res) => {
     const user = await userModel.createUser(email, hashed, first_name, last_name, company_name, job_title);
     res.status(201).json({ userId: user.id });
   } catch (err) {
-    if (err.code === '23505') return res.status(400).json({ error: 'Email already in use' });
+    if (err.code === UNIQUE_VIOLATION) return res.status(400).json({ error: 'Email already in use' });
     res.status(500).json({ error: 'Server error' });
   }
 };
@@ -24,7 +25,7 @@ exports.login = async (req, res) => {
     if (!user) return res.status(404).json({ error: 'User not found' });
     if(user.status === 'blocked') return res.status(400).json({ error: 'User blocked' });
     const match = await bcrypt.compare(password, user.password);
-    if (!match) return res.status(401).json({ error: 'Invalid credentials' });
+    if (!match) return res.status(401).json({ error: 'Invalid email or password' });
 
     await userModel.updateLastLogin(email);
 
@@ -42,7 +43,6 @@ exports.login = async (req, res) => {
     });
 
   } catch (err) {
-    console.log(err)
     res.status(500).json({ error: 'Server error' });
   }
 };
